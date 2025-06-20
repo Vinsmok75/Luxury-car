@@ -1,0 +1,101 @@
+{% extends 'rentals/admin/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ title }} - Admin Dashboard{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+
+{% block page_actions %}
+<a href="{% url 'admin_faqs_list' %}" class="btn btn-secondary">
+    <i class="fas fa-arrow-left me-2"></i>Back to FAQs
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title mb-0">FAQ Information</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-4">
+                        {{ form.question|as_crispy_field }}
+                    </div>
+                    
+                    <div class="mb-4">
+                        {{ form.answer|as_crispy_field }}
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form.order|as_crispy_field }}
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check form-switch mt-4">
+                                {{ form.is_active }}
+                                <label class="form-check-label" for="{{ form.is_active.id_for_label }}">
+                                    Active (visible on website)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-end mt-4">
+                        <a href="{% url 'admin_faqs_list' %}" class="btn btn-secondary me-2">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Save FAQ</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- FAQ Writing Tips -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h3 class="card-title mb-0">Writing Effective FAQs</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <h5><i class="fas fa-check text-success me-2"></i>Do:</h5>
+                            <ul>
+                                <li>Use questions that customers actually ask</li>
+                                <li>Keep questions concise and to the point</li>
+                                <li>Provide clear, actionable answers</li>
+                                <li>Use simple, jargon-free language</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <h5><i class="fas fa-times text-danger me-2"></i>Don't:</h5>
+                            <ul>
+                                <li>Use technical jargon or complex terms</li>
+                                <li>Write overly long answers</li>
+                                <li>Include promotional content in answers</li>
+                                <li>Create FAQs that don't address real customer concerns</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Add Bootstrap styling to the is_active checkbox
+    document.addEventListener('DOMContentLoaded', function() {
+        const isActiveCheckbox = document.getElementById('{{ form.is_active.id_for_label }}');
+        if (isActiveCheckbox) {
+            isActiveCheckbox.classList.add('form-check-input');
+        }
+    });
+</script>
+{% endblock %} 

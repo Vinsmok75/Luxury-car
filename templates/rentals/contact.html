@@ -1,0 +1,486 @@
+{% extends 'rentals/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Contact Us - {{ site_settings.site_name|default:"DriveElite" }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero hero-small">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h1>Contact Us</h1>
+                <p class="mb-4">Get in touch with our team for any inquiries or support</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="contact-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="contact-info">
+                    <div class="info-card mb-4">
+                        <div class="icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3>Visit Us</h3>
+                        <p>123 Premium Drive<br>Los Angeles, CA 90001</p>
+                    </div>
+                    <div class="info-card mb-4">
+                        <div class="icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <h3>Call Us</h3>
+                        <p>+1 (555) 123-4567<br>Mon - Fri, 9am - 6pm</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3>Email Us</h3>
+                        <p>info@{{ site_settings.site_name|default:"driveelite"|lower }}.com<br>support@{{ site_settings.site_name|default:"driveelite"|lower }}.com</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="contact-form" id="contact-form">
+                    <h2 class="mb-4">Send us a message</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                {{ form.name|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.email|as_crispy_field }}
+                            </div>
+                            <div class="col-12">
+                                {{ form.subject|as_crispy_field }}
+                            </div>
+                            <div class="col-12">
+                                {{ form.message|as_crispy_field }}
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary-custom">Send Message</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Map Section -->
+<section class="map-section">
+    <div class="container-fluid p-0">
+        <div class="map-container">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d423286.27405770525!2d-118.69192113701254!3d34.02016130653294!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2c75ddc27da13%3A0xe22fdf6f254608f4!2sLos%20Angeles%2C%20CA!5e0!3m2!1sen!2sus!4v1635176592548!5m2!1sen!2sus"
+                width="100%"
+                height="450"
+                style="border:0;"
+                allowfullscreen=""
+                loading="lazy">
+            </iframe>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Info -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="rounded-circle bg-primary text-white mx-auto mb-4 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-map-marker-alt fa-2x"></i>
+                        </div>
+                        <h4>Our Location</h4>
+                        <p>123 Luxury Drive<br>New York, NY 10001</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="rounded-circle bg-primary text-white mx-auto mb-4 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-phone fa-2x"></i>
+                        </div>
+                        <h4>Phone Number</h4>
+                        <p>+1 (234) 567-8900<br>+1 (234) 567-8901</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="rounded-circle bg-primary text-white mx-auto mb-4 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-envelope fa-2x"></i>
+                        </div>
+                        <h4>Email Address</h4>
+                        <p>info@{{ site_settings.site_name|default:"driveelite"|lower }}.com<br>support@{{ site_settings.site_name|default:"driveelite"|lower }}.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Social Media Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center mb-5">
+                <h2 class="display-5 fw-bold">Connect With Us</h2>
+                <p class="lead">Follow us on social media for updates, promotions, and more</p>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="social-media-grid">
+                    {% if social_media_links %}
+                        <div class="row g-4 justify-content-center">
+                            {% for link in social_media_links %}
+                                <div class="col-6 col-md-3">
+                                    <a href="{{ link.url }}" target="_blank" class="social-media-card d-block text-center p-4">
+                                        <div class="social-icon mb-3">
+                                            <i class="fab fa-{{ link.platform }} fa-3x"></i>
+                                        </div>
+                                        <h5>{{ link.get_platform_display }}</h5>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <p>Connect with us on social media soon!</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center mb-5">
+                <h2 class="display-5 fw-bold">Frequently Asked Questions</h2>
+                <p class="lead">Find answers to common questions about our services</p>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion" id="faqAccordion">
+                    {% if faqs %}
+                        {% for faq in faqs %}
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+                                    <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="collapse{{ forloop.counter }}">
+                                        {{ faq.question }}
+                                    </button>
+                                </h2>
+                                <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        {{ faq.answer|linebreaks }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <!-- Default FAQs if none are in the database -->
+                        <!-- FAQ Item 1 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    How old do I need to be to rent a car?
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    <p>To rent a standard car from our fleet, you must be at least 21 years old. For luxury and premium vehicles, the minimum age requirement is 25 years. All drivers must have a valid driver's license that has been held for at least one year.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- FAQ Item 2 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    What documents do I need to rent a car?
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    <p>You'll need to provide:</p>
+                                    <ul>
+                                        <li>A valid driver's license</li>
+                                        <li>A major credit card in the renter's name</li>
+                                        <li>Proof of insurance</li>
+                                        <li>A second form of identification (passport or ID card)</li>
+                                    </ul>
+                                    <p>For international customers, an International Driving Permit may be required along with your foreign license.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- FAQ Item 3 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    Is there a mileage limit on rentals?
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    <p>Our standard rentals include 150 miles per day. Premium and luxury vehicles have a limit of 100 miles per day. If you exceed this limit, additional charges apply at a rate of $0.75 per extra mile for standard cars and $1.50 per extra mile for premium vehicles. We also offer unlimited mileage packages for an additional fee.</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="text-center mt-5">
+                    <p class="mb-4">Don't see your question here? Contact us directly and we'll be happy to help.</p>
+                    <a href="#contact-form" class="btn btn-primary">Ask a Question</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 text-center text-lg-start">
+                <h5><i class="fas fa-car"></i> {{ site_settings.site_name|default:"DriveElite" }}</h5>
+                <p class="mb-0">Ready to experience luxury on wheels? Contact us or browse our fleet today!</p>
+            </div>
+            <div class="col-lg-4 text-center text-lg-end mt-4 mt-lg-0">
+                <a href="{% url 'cars_list' %}" class="btn btn-light me-2">Browse Fleet</a>
+                <a href="tel:+12345678900" class="btn btn-outline-light">Call Us</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer Info -->
+<section class="py-4 bg-dark text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4 mb-md-0">
+                <h5>Business Hours</h5>
+                <p>Monday - Friday: 8:00 AM - 8:00 PM<br>
+                   Saturday: 9:00 AM - 6:00 PM<br>
+                   Sunday: 10:00 AM - 4:00 PM</p>
+            </div>
+            <div class="col-md-4 mb-4 mb-md-0">
+                <h5>Follow Us</h5>
+                <div class="d-flex gap-3">
+                    {% if social_media_links %}
+                        {% for link in social_media_links %}
+                            <a href="{{ link.url }}" target="_blank" class="text-white" title="{{ link.get_platform_display }}">
+                                <i class="fab fa-{{ link.platform }} fa-2x"></i>
+                            </a>
+                        {% endfor %}
+                    {% else %}
+                        <a href="#" class="text-white"><i class="fab fa-facebook fa-2x"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram fa-2x"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-twitter fa-2x"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-youtube fa-2x"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h5>Contact</h5>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Luxury Drive, New York</p>
+                <p><i class="fas fa-phone"></i> +1 (234) 567-8900</p>
+                <p><i class="fas fa-envelope"></i> info@{{ site_settings.site_name|default:"driveelite"|lower }}.com</p>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <p>&copy; 2024 {{ site_settings.site_name|default:"DriveElite" }}. All rights reserved. | Privacy Policy | Terms of Service</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-small {
+        padding: 60px 0;
+        background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('{% static "images/contact-bg.jpg" %}') no-repeat center center;
+        background-size: cover;
+    }
+
+    .contact-section {
+        background-color: var(--light-bg);
+    }
+
+    .info-card {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .info-card .icon {
+        width: 60px;
+        height: 60px;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .info-card h3 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .info-card p {
+        color: var(--text-color);
+        margin-bottom: 0;
+    }
+
+    .contact-form {
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .form-control {
+        border: 1px solid #E5E5E5;
+        border-radius: 8px;
+        padding: 12px 15px;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(76, 123, 253, 0.25);
+    }
+
+    .map-container {
+        height: 450px;
+        width: 100%;
+    }
+
+    .map-container iframe {
+        width: 100%;
+        height: 100%;
+    }
+    
+    /* FAQ Styles */
+    .accordion-item {
+        border: none;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    .accordion-button {
+        font-weight: 600;
+        padding: 20px;
+        background-color: white;
+        color: var(--text-color);
+    }
+    
+    .accordion-button:not(.collapsed) {
+        color: var(--primary-color);
+        background-color: rgba(76, 123, 253, 0.05);
+        box-shadow: none;
+    }
+    
+    .accordion-button:focus {
+        box-shadow: none;
+        border-color: rgba(76, 123, 253, 0.1);
+    }
+    
+    .accordion-button:not(.collapsed)::after {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%234C7BFD'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    }
+    
+    .accordion-body {
+        padding: 20px;
+        background-color: white;
+    }
+    
+    .accordion-body p:last-child {
+        margin-bottom: 0;
+    }
+    
+    .accordion-body ul {
+        padding-left: 20px;
+    }
+    
+    .accordion-body li {
+        margin-bottom: 8px;
+    }
+    
+    /* Social Media Styles */
+    .social-media-card {
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        color: var(--text-color);
+        text-decoration: none;
+    }
+    
+    .social-media-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        color: var(--primary-color);
+    }
+    
+    .social-media-card .fa-facebook {
+        color: #1877F2;
+    }
+    
+    .social-media-card .fa-instagram {
+        color: #E1306C;
+    }
+    
+    .social-media-card .fa-twitter {
+        color: #1DA1F2;
+    }
+    
+    .social-media-card .fa-youtube {
+        color: #FF0000;
+    }
+    
+    .social-media-card .fa-linkedin {
+        color: #0A66C2;
+    }
+    
+    .social-media-card .fa-pinterest {
+        color: #E60023;
+    }
+    
+    .social-media-card .fa-tiktok {
+        color: #000000;
+    }
+    
+    .social-media-card h5 {
+        margin-bottom: 0;
+        font-weight: 600;
+    }
+</style>
+{% endblock %}

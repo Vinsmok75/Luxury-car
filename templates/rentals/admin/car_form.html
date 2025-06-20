@@ -1,0 +1,424 @@
+{% extends 'rentals/admin/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ title }} - {{ site_settings.site_name|default:"DriveElite" }} Admin{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .luxury-form {
+        background: white;
+        border-radius: 0.475rem;
+        box-shadow: 0 0 20px rgba(0,0,0,0.05);
+    }
+
+    .luxury-form .card-body {
+        padding: 2rem;
+    }
+
+    .form-section {
+        margin-bottom: 2rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid #EFF2F5;
+    }
+
+    .form-section:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+
+    .section-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: #181C32;
+    }
+
+    .form-label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: #3F4254;
+    }
+
+    .form-control, .form-select {
+        padding: 0.75rem 1rem;
+        border-radius: 0.475rem;
+        border: 1px solid #E4E6EF;
+        transition: all 0.2s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(76, 123, 253, 0.25);
+    }
+
+    .image-preview {
+        width: 150px;
+        height: 100px;
+        border-radius: 0.475rem;
+        overflow: hidden;
+        position: relative;
+        background: #F5F8FA;
+        border: 1px solid #E4E6EF;
+        margin-top: 0.5rem;
+    }
+
+    .image-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .delete-image {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: rgba(0,0,0,0.5);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .delete-image:hover {
+        background: rgba(0,0,0,0.7);
+    }
+
+    .btn-luxury {
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        border-radius: 0.475rem;
+        transition: all 0.2s ease;
+    }
+
+    .btn-luxury.btn-primary {
+        background: var(--primary-color);
+        border: none;
+    }
+
+    .btn-luxury.btn-primary:hover {
+        background: #3563d8;
+        transform: translateY(-1px);
+    }
+
+    .feature-toggle {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+    .feature-toggle input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #E4E6EF;
+        transition: .4s;
+        border-radius: 34px;
+    }
+
+    .toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+    input:checked + .toggle-slider {
+        background-color: var(--primary-color);
+    }
+
+    input:checked + .toggle-slider:before {
+        transform: translateX(26px);
+    }
+
+    .image-card {
+        position: relative;
+        border-radius: 0.475rem;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        height: 200px;
+    }
+
+    .preview-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .image-card-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 1rem;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .image-card:hover .image-card-overlay {
+        opacity: 1;
+    }
+
+    .image-card .form-check {
+        margin: 0;
+    }
+
+    .image-card .form-check-input {
+        border-color: white;
+    }
+
+    .image-card .form-check-label {
+        font-size: 0.875rem;
+        margin-left: 0.5rem;
+    }
+
+    .image-item .form-group {
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data" class="luxury-form">
+    {% csrf_token %}
+    <div class="card">
+        <div class="card-body">
+            <!-- Basic Information -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    <i class="fas fa-info-circle me-2"></i>Basic Information
+                </h3>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        {{ form.name|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.brand|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.model|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.phone_number|as_crispy_field }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features & Specifications -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    <i class="fas fa-cogs me-2"></i>Features & Specifications
+                </h3>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        {{ form.transmission|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.fuel_type|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.seats|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.doors|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.engine_specs|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.mileage|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.color|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.price_per_day|as_crispy_field }}
+                    </div>
+                    <div class="col-12">
+                        {{ form.description|as_crispy_field }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Images -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    <i class="fas fa-images me-2"></i>Car Images
+                </h3>
+                {{ formset.management_form }}
+                <div class="mb-4">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <label class="btn btn-outline-primary mb-0">
+                            <i class="fas fa-plus me-2"></i>Add Images
+                            <input type="file" id="image-upload" multiple accept="image/*" style="display: none;">
+                        </label>
+                        <small class="text-muted">You can select multiple images at once</small>
+                    </div>
+                    <div id="image-preview-container" class="row g-3">
+                        {% for image_form in formset %}
+                            {% if image_form.instance.image %}
+                                <div class="col-md-4 col-sm-6 image-item" data-id="{{ forloop.counter0 }}">
+                                    <div class="image-card">
+                                        <img src="{{ image_form.instance.image.url }}" alt="Car image" class="preview-image">
+                                        <div class="image-card-overlay">
+                                            <div class="form-check">
+                                                <input type="radio" name="primary_image" class="form-check-input" 
+                                                       {% if image_form.instance.is_primary %}checked{% endif %}
+                                                       onchange="updatePrimaryImage(this, {{ forloop.counter0 }})">
+                                                <label class="form-check-label text-white">Primary</label>
+                                            </div>
+                                            <button type="button" class="btn btn-sm btn-danger delete-image" 
+                                                    onclick="deleteImage({{ forloop.counter0 }})">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                        {{ image_form.as_p }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status & Visibility -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    <i class="fas fa-toggle-on me-2"></i>Status & Visibility
+                </h3>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        {{ form.availability_status|as_crispy_field }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="d-flex justify-content-end gap-2">
+                <a href="{% url 'admin_cars_list' %}" class="btn btn-luxury btn-outline-secondary">
+                    <i class="fas fa-times me-2"></i>Cancel
+                </a>
+                <button type="submit" class="btn btn-luxury btn-primary">
+                    <i class="fas fa-save me-2"></i>Save Car
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.getElementById('image-upload').addEventListener('change', function(e) {
+        const files = Array.from(e.target.files);
+        const container = document.getElementById('image-preview-container');
+        const formset = document.getElementById('image-formset');
+        const totalForms = document.getElementById('id_images-TOTAL_FORMS');
+        const currentCount = parseInt(totalForms.value);
+
+        files.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const formIndex = currentCount + index;
+                const imageHtml = `
+                    <div class="col-md-4 col-sm-6 image-item" data-id="${formIndex}">
+                        <div class="image-card">
+                            <img src="${e.target.result}" alt="Preview" class="preview-image">
+                            <div class="image-card-overlay">
+                                <div class="form-check">
+                                    <input type="radio" name="primary_image" class="form-check-input" 
+                                           onchange="updatePrimaryImage(this, ${formIndex})">
+                                    <label class="form-check-label text-white">Primary</label>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-danger delete-image" 
+                                        onclick="deleteImage(${formIndex})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <input type="file" name="images-${formIndex}-image" style="display:none">
+                            <input type="hidden" name="images-${formIndex}-is_primary" value="false">
+                            <input type="hidden" name="images-${formIndex}-id" value="">
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', imageHtml);
+                
+                // Set the file to the hidden input
+                const fileInput = container.querySelector(`input[name="images-${formIndex}-image"]`);
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                fileInput.files = dataTransfer.files;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        totalForms.value = currentCount + files.length;
+    });
+
+    function updatePrimaryImage(radio, index) {
+        // Uncheck all other primary checkboxes
+        document.querySelectorAll('input[name="primary_image"]').forEach(input => {
+            if (input !== radio) {
+                input.checked = false;
+            }
+        });
+
+        // Update hidden primary inputs
+        document.querySelectorAll('[name$="-is_primary"]').forEach(input => {
+            input.value = "false";
+        });
+        document.querySelector(`[name="images-${index}-is_primary"]`).value = "true";
+    }
+
+    function deleteImage(index) {
+        const item = document.querySelector(`.image-item[data-id="${index}"]`);
+        if (item) {
+            // If there's a DELETE checkbox, check it, otherwise remove the element
+            const deleteInput = item.querySelector('input[name$="-DELETE"]');
+            if (deleteInput) {
+                deleteInput.checked = true;
+                item.style.display = 'none';
+            } else {
+                item.remove();
+            }
+        }
+    }
+
+    // Initialize existing images
+    document.querySelectorAll('.image-item').forEach(item => {
+        const index = item.dataset.id;
+        const isPrimary = item.querySelector('input[name$="-is_primary"]')?.value === 'true';
+        if (isPrimary) {
+            item.querySelector('input[name="primary_image"]').checked = true;
+        }
+    });
+</script>
+{% endblock %}

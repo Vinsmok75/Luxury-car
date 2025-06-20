@@ -1,0 +1,204 @@
+{% extends 'rentals/base.html' %}
+{% load static %}
+
+{% block title %}Our Fleet - {{ site_settings.site_name|default:"DriveElite" }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero hero-small">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h1>Our Fleet</h1>
+                <p class="mb-4">Choose from our exclusive collection of premium vehicles</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Search and Filter Section -->
+<section class="search-section py-5">
+    <div class="container">
+        <div class="search-form mb-5">
+            <form method="get">
+                <div class="row g-3">
+                    <div class="col-lg-3 col-md-6">
+                        <label class="form-label">Brand</label>
+                        <select name="brand" class="form-select">
+                            <option value="">All Brands</option>
+                            {% for brand in brands %}
+                            <option value="{{ brand }}" {% if current_filters.brand == brand %}selected{% endif %}>{{ brand }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <label class="form-label">Fuel Type</label>
+                        <select name="fuel_type" class="form-select">
+                            <option value="">All Types</option>
+                            {% for value, label in fuel_types %}
+                            <option value="{{ value }}" {% if current_filters.fuel_type == value %}selected{% endif %}>{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <label class="form-label">Transmission</label>
+                        <select name="transmission" class="form-select">
+                            <option value="">All Transmissions</option>
+                            {% for value, label in transmission_types %}
+                            <option value="{{ value }}" {% if current_filters.transmission == value %}selected{% endif %}>{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <label class="form-label">Search</label>
+                        <input type="text" name="search" class="form-control" placeholder="Search cars..." value="{{ current_filters.search }}">
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-lg-3 col-md-6">
+                        <label class="form-label">Min Price</label>
+                        <input type="number" name="price_min" class="form-control" placeholder="Min $" value="{{ current_filters.price_min }}">
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <label class="form-label">Max Price</label>
+                        <input type="number" name="price_max" class="form-control" placeholder="Max $" value="{{ current_filters.price_max }}">
+                    </div>
+                    <div class="col-lg-3 col-md-6 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary-custom w-100">Apply Filters</button>
+                    </div>
+                    <div class="col-lg-3 col-md-6 d-flex align-items-end">
+                        <a href="{% url 'cars_list' %}" class="btn btn-outline-secondary w-100">Clear Filters</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Cars Grid -->
+        <div class="row">
+            {% for car in cars %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="car-card">
+                    {% if car.images.first %}
+                    <img src="{{ car.images.first.image.url }}" alt="{{ car.name }}">
+                    {% endif %}
+                    <div class="car-card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="car-title mb-0">{{ car.name }}</h5>
+                        </div>
+                        <div class="car-features mb-3">
+                            <span class="feature-badge">{{ car.get_transmission_display }}</span>
+                            <span class="feature-badge">{{ car.seats }} Seats</span>
+                            <span class="feature-badge">{{ car.get_fuel_type_display }}</span>
+                            {% if car.phone_number %}
+                            <span class="feature-badge"><i class="fas fa-phone me-1"></i>{{ car.phone_number }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="car-price">${{ car.price_per_day }}<span class="text-muted">/day</span></div>
+                            <a href="{% url 'car_detail' car.pk %}" class="btn btn-primary-custom">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <div class="empty-state">
+                    <i class="fas fa-car fa-3x mb-3"></i>
+                    <h3>No cars found</h3>
+                    <p class="text-muted">Try adjusting your search criteria</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if cars.has_other_pages %}
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if cars.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ cars.previous_page_number }}{% for key, value in current_filters.items %}&{{ key }}={{ value }}{% endfor %}">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% for num in cars.paginator.page_range %}
+                <li class="page-item {% if cars.number == num %}active{% endif %}">
+                    <a class="page-link" href="?page={{ num }}{% for key, value in current_filters.items %}&{{ key }}={{ value }}{% endfor %}">
+                        {{ num }}
+                    </a>
+                </li>
+                {% endfor %}
+
+                {% if cars.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ cars.next_page_number }}{% for key, value in current_filters.items %}&{{ key }}={{ value }}{% endfor %}">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-small {
+        padding: 60px 0;
+        background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('{% static "images/fleet-bg.jpg" %}') no-repeat center center;
+        background-size: cover;
+    }
+
+    .search-section {
+        background-color: var(--light-bg);
+    }
+
+    .feature-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        background-color: var(--light-bg);
+        color: var(--text-color);
+        font-size: 0.875rem;
+        margin-right: 8px;
+        margin-bottom: 8px;
+    }
+
+    .empty-state {
+        padding: 60px 0;
+        color: var(--text-color);
+    }
+
+    .empty-state i {
+        color: var(--primary-color);
+    }
+
+    .pagination .page-link {
+        color: var(--text-color);
+        border: none;
+        padding: 10px 16px;
+        margin: 0 4px;
+        border-radius: 8px;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .form-select, .form-control {
+        border: 1px solid #E5E5E5;
+        border-radius: 8px;
+        padding: 12px 15px;
+    }
+
+    .form-select:focus, .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(76, 123, 253, 0.25);
+    }
+</style>
+{% endblock %}

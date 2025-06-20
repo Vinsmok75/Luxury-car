@@ -1,0 +1,124 @@
+{% extends 'rentals/admin/base.html' %}
+
+{% block title %}Manage Cars - {{ site_settings.site_name|default:"DriveElite" }} Admin{% endblock %}
+{% block page_title %}Manage Cars{% endblock %}
+
+{% block page_actions %}
+<a href="{% url 'admin_add_car' %}" class="btn btn-primary">
+    <i class="fas fa-plus"></i> Add New Car
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Car</th>
+                        <th>Brand</th>
+                        <th>Price/Day</th>
+                        <th>Status</th>
+                        <th>Last Updated</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for car in cars %}
+                    <tr>
+                        <td>
+                            {% if car.images.first %}
+                            <div class="d-flex align-items-center">
+                                <div class="car-thumbnail me-2">
+                                    <img src="{{ car.images.first.image.url }}" alt="{{ car.name }}">
+                                </div>
+                                <span>{{ car.name }}</span>
+                            </div>
+                            {% else %}
+                            <div class="d-flex align-items-center">
+                                <div class="car-thumbnail me-2 placeholder-img">
+                                    <i class="fas fa-car"></i>
+                                </div>
+                                <span>{{ car.name }}</span>
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td>{{ car.brand }}</td>
+                        <td>${{ car.price_per_day }}</td>
+                        <td>
+                            {% if car.availability_status == 'available' %}
+                                <span class="badge bg-success">Available</span>
+                            {% elif car.availability_status == 'rented' %}
+                                <span class="badge bg-warning">Rented</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Maintenance</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ car.updated_at|date:"M d, Y" }}</td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="{% url 'car_detail' car.pk %}" class="btn btn-sm btn-outline-primary" 
+                                   title="View on site" target="_blank">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{% url 'admin_edit_car' car.pk %}" class="btn btn-sm btn-outline-success" 
+                                   title="Edit car">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'admin_delete_car' car.pk %}" class="btn btn-sm btn-outline-danger" 
+                                   title="Delete car">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center py-4">
+                            <div class="text-muted">
+                                <i class="fas fa-car fa-2x mb-3"></i>
+                                <h5>No cars available</h5>
+                                <p>Start by adding your first car to the fleet.</p>
+                                <a href="{% url 'admin_add_car' %}" class="btn btn-primary">
+                                    <i class="fas fa-plus"></i> Add New Car
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Pagination -->
+{% if cars.has_other_pages %}
+<nav class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if cars.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ cars.previous_page_number }}">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+        </li>
+        {% endif %}
+
+        {% for num in cars.paginator.page_range %}
+        <li class="page-item {% if cars.number == num %}active{% endif %}">
+            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+        </li>
+        {% endfor %}
+
+        {% if cars.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ cars.next_page_number }}">
+                <i class="fas fa-chevron-right"></i>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}

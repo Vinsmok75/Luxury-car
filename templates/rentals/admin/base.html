@@ -1,0 +1,336 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Dashboard{% endblock %}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --sidebar-width: 250px;
+            --header-height: 60px;
+            --primary-color: #4C7BFD;
+            --sidebar-bg: #1E1E2D;
+            --sidebar-color: #A2A3B7;
+            --sidebar-hover: #2A2A3C;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #F3F6F9;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: var(--sidebar-width);
+            background: var(--sidebar-bg);
+            padding: 0;
+            z-index: 100;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: white;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-header h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sidebar-logo {
+            height: 40px;
+            width: auto;
+            margin-right: 1rem;
+            object-fit: contain;
+        }
+
+        .nav-section {
+            padding: 1rem 0;
+        }
+
+        .nav-section-title {
+            color: #565674;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 0 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-item {
+            padding: 0 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--sidebar-color);
+            padding: 0.75rem 1rem;
+            border-radius: 0.475rem;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link i {
+            margin-right: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .nav-link:hover {
+            color: white;
+            background: var(--sidebar-hover);
+        }
+
+        .nav-link.active {
+            color: white;
+            background: var(--primary-color);
+        }
+
+        /* Main Content */
+        .admin-main {
+            margin-left: var(--sidebar-width);
+            padding: 1.5rem;
+            min-height: 100vh;
+        }
+
+        .admin-header {
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 0.475rem;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* Cards */
+        .card {
+            border: none;
+            border-radius: 0.475rem;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+        }
+
+        .card-header {
+            background: white;
+            border-bottom: 1px solid #EFF2F5;
+            padding: 1.5rem;
+        }
+
+        /* Stats Card */
+        .stats-card {
+            background: white;
+            border-radius: 0.475rem;
+            padding: 1.5rem;
+            height: 100%;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+        }
+
+        .stats-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 0.475rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .stats-icon i {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .stats-icon.primary { background: var(--primary-color); }
+        .stats-icon.success { background: #50CD89; }
+        .stats-icon.warning { background: #FFC700; }
+        .stats-icon.info { background: #7239EA; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .admin-main {
+                margin-left: 0;
+            }
+        }
+
+        /* Header button styles */
+        .home-button {
+            padding: 0.5rem 1rem;
+            border-radius: 0.475rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        
+        .home-button:hover {
+            background-color: #3867e0;
+            color: white;
+            transform: translateY(-1px);
+        }
+        
+        .home-button i {
+            font-size: 1rem;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            {% with site_settings=request.site_settings %}
+            {% if site_settings.site_logo %}
+                <img src="{{ site_settings.site_logo.url }}" alt="Site Logo" class="sidebar-logo">
+            {% endif %}
+            <h3>{{ site_settings.site_name|default:"Car Rental" }}</h3>
+            {% endwith %}
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">Dashboard</div>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}" 
+                       href="{% url 'admin_dashboard' %}">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Overview
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Management</div>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link {% if 'cars' in request.resolver_match.url_name %}active{% endif %}" 
+                       href="{% url 'admin_cars_list' %}">
+                        <i class="fas fa-car"></i>
+                        Cars
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if 'bookings' in request.resolver_match.url_name %}active{% endif %}" 
+                       href="{% url 'admin_bookings_list' %}">
+                        <i class="fas fa-calendar"></i>
+                        Bookings
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if 'customers' in request.resolver_match.url_name %}active{% endif %}" 
+                       href="{% url 'admin_customers_list' %}">
+                        <i class="fas fa-users"></i>
+                        Customers
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if 'messages' in request.resolver_match.url_name %}active{% endif %}" 
+                       href="{% url 'admin_messages_list' %}">
+                        <i class="fas fa-envelope"></i>
+                        Messages
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if 'social_media' in request.resolver_match.url_name %}active{% endif %}" 
+                       href="{% url 'admin_social_media_list' %}">
+                        <i class="fas fa-share-alt"></i>
+                        Social Media
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if 'faq' in request.resolver_match.url_name %}active{% endif %}" 
+                       href="{% url 'admin_faqs_list' %}">
+                        <i class="fas fa-question-circle"></i>
+                        FAQs
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Settings</div>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'admin_site_settings' %}active{% endif %}" href="{% url 'admin_site_settings' %}">
+                        <i class="fas fa-cog"></i>
+                        Site Settings
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <form method="post" action="{% url 'admin_logout' %}" class="nav-link p-0">
+                        {% csrf_token %}
+                        <button type="submit" class="nav-link w-100 text-start border-0 bg-transparent">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <!-- Header -->
+        <div class="admin-header d-flex justify-content-between align-items-center">
+            <h1 class="page-title">{% block page_title %}Dashboard{% endblock %}</h1>
+            <div class="page-actions d-flex align-items-center gap-3">
+                <a href="{% url 'home' %}" class="home-button">
+                    <i class="fas fa-home"></i>
+                    Go to Home Page
+                </a>
+                {% block page_actions %}{% endblock %}
+            </div>
+        </div>
+
+        <!-- Messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Page Content -->
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

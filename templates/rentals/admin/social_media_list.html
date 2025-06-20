@@ -1,0 +1,127 @@
+{% extends 'rentals/admin/base.html' %}
+{% load static %}
+
+{% block title %}Social Media Links - Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title mb-0">Social Media Links</h3>
+                    <a href="{% url 'admin_add_social_media' %}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus me-2"></i>Add New Link
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if social_links %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Platform</th>
+                                    <th>URL</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for link in social_links %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="social-icon me-3">
+                                                <i class="fab fa-{{ link.platform }} fa-lg"></i>
+                                            </div>
+                                            <span>{{ link.get_platform_display }}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="{{ link.url }}" target="_blank" class="text-decoration-none">
+                                            {{ link.url }}
+                                            <i class="fas fa-external-link-alt ms-1 small"></i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {% if link.is_active %}
+                                        <span class="badge bg-success">Active</span>
+                                        {% else %}
+                                        <span class="badge bg-secondary">Inactive</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a href="{% url 'admin_edit_social_media' link.pk %}" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="{% url 'admin_delete_social_media' link.pk %}" class="btn btn-sm btn-outline-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <div class="mb-3">
+                            <i class="fas fa-share-alt fa-3x text-muted"></i>
+                        </div>
+                        <h5 class="text-muted">No social media links found</h5>
+                        <p>Add your first social media link to display it on your website.</p>
+                        <a href="{% url 'admin_add_social_media' %}" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>Add Social Media Link
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .social-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .fa-facebook {
+        color: #1877F2;
+    }
+    
+    .fa-instagram {
+        color: #E4405F;
+    }
+    
+    .fa-twitter {
+        color: #1DA1F2;
+    }
+    
+    .fa-linkedin {
+        color: #0A66C2;
+    }
+    
+    .fa-youtube {
+        color: #FF0000;
+    }
+    
+    .fa-tiktok {
+        color: #000000;
+    }
+    
+    .fa-pinterest {
+        color: #E60023;
+    }
+</style>
+{% endblock %} 

@@ -1,0 +1,161 @@
+{% extends 'rentals/admin/base.html' %}
+
+{% block title %}Customer Details - Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">Customer Details</h1>
+        <div>
+            <a href="{% url 'admin_edit_customer' customer.id %}" class="btn btn-primary">
+                <i class="fas fa-edit"></i> Edit Customer
+            </a>
+            <a href="{% url 'admin_customers_list' %}" class="btn btn-outline-secondary ms-2">
+                <i class="fas fa-arrow-left"></i> Back to List
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Customer Info -->
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Personal Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="avatar-circle me-3">
+                            <span class="initials">{{ customer.user.first_name|first }}{{ customer.user.last_name|first }}</span>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">{{ customer.user.get_full_name }}</h5>
+                            <p class="text-muted mb-0">Customer #{{ customer.id }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="customer-info">
+                        <div class="info-item">
+                            <span class="info-label">Email</span>
+                            <span class="info-value">{{ customer.user.email }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Phone</span>
+                            <span class="info-value">{{ customer.phone }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Driver's License</span>
+                            <span class="info-value">{{ customer.driver_license }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Address</span>
+                            <span class="info-value">{{ customer.address }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Joined</span>
+                            <span class="info-value">{{ customer.created_at|date:"F d, Y" }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Total Bookings</span>
+                            <span class="info-value">{{ bookings|length }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Bookings -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Booking History</h5>
+                </div>
+                <div class="card-body">
+                    {% if bookings %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Car</th>
+                                    <th>Dates</th>
+                                    <th>Total Price</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking in bookings %}
+                                <tr>
+                                    <td>#{{ booking.id }}</td>
+                                    <td>{{ booking.car.name }}</td>
+                                    <td>{{ booking.start_date|date:"M d, Y" }} to {{ booking.end_date|date:"M d, Y" }}</td>
+                                    <td>${{ booking.total_price }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ booking.status }}">
+                                            {{ booking.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'admin_view_booking' booking.id %}" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <p class="text-muted mb-0">No bookings found for this customer</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .avatar-circle {
+        width: 60px;
+        height: 60px;
+        background-color: var(--primary-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .initials {
+        font-size: 24px;
+        color: white;
+        font-weight: 500;
+    }
+    
+    .customer-info {
+        margin-top: 1.5rem;
+    }
+    
+    .info-item {
+        display: flex;
+        margin-bottom: 1rem;
+        flex-direction: column;
+    }
+    
+    .info-label {
+        color: var(--text-muted);
+        font-size: 0.875rem;
+    }
+    
+    .info-value {
+        font-weight: 500;
+    }
+    
+    .badge.bg-pending { background-color: var(--warning); }
+    .badge.bg-confirmed { background-color: var(--success); }
+    .badge.bg-cancelled { background-color: var(--danger); }
+    .badge.bg-completed { background-color: var(--info); }
+</style>
+{% endblock %} 

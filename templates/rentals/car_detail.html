@@ -1,0 +1,260 @@
+{% extends 'rentals/base.html' %}
+{% load static %}
+
+{% block title %}{{ car.name }} - {{ site_settings.site_name|default:"DriveElite" }}{% endblock %}
+
+{% block content %}
+<!-- Car Details Section -->
+<section class="car-detail-section py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Car Images -->
+            <div class="col-lg-7 mb-4 mb-lg-0">
+                <div class="car-images">
+                    {% if car.images.all %}
+                    <div id="carImageSlider" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            {% for image in car.images.all %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <img src="{{ image.image.url }}" class="d-block w-100" alt="{{ image.alt_text }}">
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carImageSlider" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carImageSlider" data-bs-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </button>
+                    </div>
+                    {% else %}
+                    <div class="no-image">
+                        <i class="fas fa-car fa-4x"></i>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Car Info -->
+            <div class="col-lg-5">
+                <div class="car-info">
+                    <h1 class="car-title">{{ car.name }}</h1>
+                    <div class="price-tag mb-4">
+                        <span class="amount">${{ car.price_per_day }}</span>
+                        <span class="period">/day</span>
+                    </div>
+                    <div class="car-features mb-4">
+                        <div class="feature-grid">
+                            <div class="feature-item">
+                                <i class="fas fa-car"></i>
+                                <span>{{ car.get_transmission_display }}</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-gas-pump"></i>
+                                <span>{{ car.get_fuel_type_display }}</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-users"></i>
+                                <span>{{ car.seats }} Seats</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-snowflake"></i>
+                                <span>{% if car.air_conditioning %}A/C{% else %}No A/C{% endif %}</span>
+                            </div>
+                            {% if car.phone_number %}
+                            <div class="feature-item">
+                                <i class="fas fa-phone"></i>
+                                <span>{{ car.phone_number }}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="booking-form">
+                        <form action="{% url 'car_detail' car.pk %}" method="post">
+                            {% csrf_token %}
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Pick-up Date</label>
+                                    <input type="date" class="form-control" name="pickup_date" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Return Date</label>
+                                    <input type="date" class="form-control" name="return_date" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Your Name</label>
+                                    <input type="text" class="form-control" name="customer_name" placeholder="Enter your full name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Email (Optional)</label>
+                                    <input type="email" class="form-control" name="customer_email" placeholder="Enter your email address">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" name="phone_number" placeholder="Enter your phone number" required>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary-custom w-100">Book Now</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Car Description -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="car-description">
+                    <h3 class="mb-4">About this car</h3>
+                    <p>{{ car.description|linebreaks }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Similar Cars -->
+        {% if related_cars %}
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3 class="mb-4">Similar Cars</h3>
+                <div class="row">
+                    {% for related_car in related_cars %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="car-card">
+                            {% if related_car.images.first %}
+                            <img src="{{ related_car.images.first.image.url }}" alt="{{ related_car.name }}">
+                            {% endif %}
+                            <div class="car-card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="car-title mb-0">{{ related_car.name }}</h5>
+                                </div>
+                                <div class="car-features mb-3">
+                                    <span class="feature-badge">{{ related_car.get_transmission_display }}</span>
+                                    <span class="feature-badge">{{ related_car.seats }} Seats</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="car-price">${{ related_car.price_per_day }}<span class="text-muted">/day</span></div>
+                                    <a href="{% url 'car_detail' related_car.pk %}" class="btn btn-primary-custom">Book Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .car-detail-section {
+        background-color: var(--light-bg);
+        padding-top: 100px;
+    }
+
+    .car-images {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .carousel-item img {
+        height: 400px;
+        object-fit: cover;
+    }
+
+    .no-image {
+        height: 400px;
+        background-color: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #adb5bd;
+    }
+
+    .car-info {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .car-title {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .price-tag {
+        background-color: var(--light-bg);
+        padding: 15px;
+        border-radius: 8px;
+        display: inline-block;
+    }
+
+    .price-tag .amount {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+
+    .price-tag .period {
+        color: var(--text-color);
+        font-size: 16px;
+    }
+
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .feature-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .feature-item i {
+        width: 40px;
+        height: 40px;
+        background-color: var(--light-bg);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary-color);
+    }
+
+    .booking-form {
+        margin-top: 30px;
+        padding-top: 30px;
+        border-top: 1px solid #e9ecef;
+    }
+
+    .car-description {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    @media (max-width: 768px) {
+        .car-detail-section {
+            padding-top: 60px;
+        }
+
+        .carousel-item img {
+            height: 300px;
+        }
+
+        .feature-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}

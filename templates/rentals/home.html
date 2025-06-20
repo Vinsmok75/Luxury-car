@@ -1,0 +1,467 @@
+{% extends 'rentals/base.html' %}
+{% load static %}
+
+{% block title %}{{ site_settings.site_name|default:"DriveElite" }} - Premium Car Rentals{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container py-5">
+        <div class="row align-items-center min-vh-75">
+            <div class="col-lg-6" data-aos="fade-right">
+                <h1 class="display-3 fw-bold mb-4 animate-fade-in text-white">Experience Luxury on Wheels</h1>
+                <p class="lead mb-4 animate-fade-in text-white" style="animation-delay: 0.2s">
+                    Choose from our exclusive collection of premium vehicles for an unforgettable journey.
+                </p>
+                <div class="animate-fade-in" style="animation-delay: 0.4s">
+                    <a href="{% url 'cars_list' %}" class="btn btn-primary btn-lg me-3">
+                        View Our Fleet
+                    </a>
+                    <a href="{% url 'contact' %}" class="btn btn-outline-light btn-lg">
+                        Contact Us
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <img src="{% static 'images/cars/hero-car.jpg' %}" alt="Luxury Car" class="img-fluid rounded-3 shadow animate-float">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Car Categories -->
+<section class="car-category py-5">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="display-5 fw-bold">Explore Our Car Categories</h2>
+            <p class="lead text-muted">Find the perfect vehicle for your needs</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-3" data-aos="fade-up" data-aos-delay="100">
+                <div class="category-card">
+                    <img src="{% static 'images/cars/mercedes.jpg' %}" alt="Mercedes-Benz">
+                    <div class="category-overlay">
+                        <h3>Mercedes-Benz</h3>
+                        <a href="{% url 'cars_list' %}" class="btn btn-light rounded-circle">
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3" data-aos="fade-up" data-aos-delay="200">
+                <div class="category-card">
+                    <img src="{% static 'images/cars/audi.jpg' %}" alt="Audi">
+                    <div class="category-overlay">
+                        <h3>Audi</h3>
+                        <a href="{% url 'cars_list' %}" class="btn btn-light rounded-circle">
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3" data-aos="fade-up" data-aos-delay="300">
+                <div class="category-card">
+                    <img src="{% static 'images/cars/bmw.jpg' %}" alt="BMW">
+                    <div class="category-overlay">
+                        <h3>BMW</h3>
+                        <a href="{% url 'cars_list' %}" class="btn btn-light rounded-circle">
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3" data-aos="fade-up" data-aos-delay="400">
+                <div class="category-card">
+                    <img src="{% static 'images/cars/porsche.jpg' %}" alt="Porsche">
+                    <div class="category-overlay">
+                        <h3>Porsche</h3>
+                        <a href="{% url 'cars_list' %}" class="btn btn-light rounded-circle">
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="display-5 fw-bold">Why Choose {{ site_settings.site_name|default:"DriveElite" }}</h2>
+            <p class="lead text-muted">Experience the difference with our premium service</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-card text-center h-100">
+                    <div class="feature-img-wrapper mb-4">
+                        <img src="{% static 'images/features/premium-fleet.jpg' %}" alt="Premium Fleet" class="feature-img">
+                    </div>
+                    <div class="feature-icon">
+                        <i class="fas fa-car-side fa-2x"></i>
+                    </div>
+                    <h4 class="mt-4">Premium Fleet</h4>
+                    <p class="text-muted mb-0">Latest models of luxury vehicles maintained to perfection</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-card text-center h-100">
+                    <div class="feature-img-wrapper mb-4">
+                        <img src="{% static 'images/features/24-7-support.jpg' %}" alt="24/7 Support" class="feature-img">
+                    </div>
+                    <div class="feature-icon">
+                        <i class="fas fa-clock fa-2x"></i>
+                    </div>
+                    <h4 class="mt-4">24/7 Support</h4>
+                    <p class="text-muted mb-0">Round-the-clock customer service for your convenience</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-card text-center h-100">
+                    <div class="feature-img-wrapper mb-4">
+                        <img src="{% static 'images/features/insurance.jpg' %}" alt="Fully Insured" class="feature-img">
+                    </div>
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt fa-2x"></i>
+                    </div>
+                    <h4 class="mt-4">Fully Insured</h4>
+                    <p class="text-muted mb-0">Comprehensive insurance coverage for peace of mind</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="feature-card text-center h-100">
+                    <div class="feature-img-wrapper mb-4">
+                        <img src="{% static 'images/features/flexible-pickup.jpg' %}" alt="Flexible Pickup" class="feature-img">
+                    </div>
+                    <div class="feature-icon">
+                        <i class="fas fa-map-marker-alt fa-2x"></i>
+                    </div>
+                    <h4 class="mt-4">Flexible Pickup</h4>
+                    <p class="text-muted mb-0">Convenient pickup and drop-off locations</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Best Rated Cars Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="display-5 fw-bold">Best Rated Cars</h2>
+            <p class="lead text-muted">Top rated by our valued customers</p>
+        </div>
+        
+        <div class="row">
+            {% for car in best_rated_cars %}
+            <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="car-card h-100">
+                    {% if car.images.first %}
+                    <div class="gallery-image">
+                        <img src="{{ car.images.first.image.url }}" alt="{{ car.name }}">
+                        <div class="gallery-overlay">
+                            <a href="{% url 'car_detail' car.pk %}" class="btn btn-light">View Details</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class="car-card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="car-title mb-0">{{ car.name }}</h5>
+                        </div>
+                        <div class="car-features mb-3">
+                            <span class="feature-badge">{{ car.get_transmission_display }}</span>
+                            <span class="feature-badge">{{ car.seats }} Seats</span>
+                            <span class="feature-badge">{{ car.get_fuel_type_display }}</span>
+                            {% if car.phone_number %}
+                            <span class="feature-badge"><i class="fas fa-phone me-1"></i>{{ car.phone_number }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="car-price">${{ car.price_per_day }}<span class="text-muted">/day</span></div>
+                            <a href="{% url 'car_detail' car.pk %}" class="btn btn-primary">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="py-5 cta-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 text-center text-lg-start" data-aos="fade-right">
+                <h2 class="display-5 fw-bold mb-3 text-white">Ready for Your Luxury Journey?</h2>
+                <p class="lead mb-lg-0 text-white">Experience the thrill of driving premium vehicles with {{ site_settings.site_name|default:"DriveElite" }}.</p>
+            </div>
+            <div class="col-lg-4 text-center text-lg-end" data-aos="fade-left">
+                <a href="{% url 'cars_list' %}" class="btn btn-light btn-lg">Browse Our Fleet</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .min-vh-75 {
+        min-height: 75vh;
+    }
+    
+    .hero {
+        position: relative;
+        background-image: url("{% static 'images/backgrounds/hero-bg.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        padding: 100px 0;
+    }
+    
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(0,0,0,0.7), rgba(0,0,0,0.4));
+        z-index: 1;
+    }
+    
+    .hero .container {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .hero h1 {
+        font-size: 3.5rem;
+        line-height: 1.2;
+    }
+    
+    @media (max-width: 768px) {
+        .hero h1 {
+            font-size: 2.5rem;
+        }
+        
+        .min-vh-75 {
+            min-height: 50vh;
+        }
+    }
+    
+    .btn-primary {
+        background-color: #4C7BFD;
+        border-color: #4C7BFD;
+    }
+    
+    .btn-primary:hover {
+        background-color: #3867e0;
+        border-color: #3867e0;
+    }
+    
+    .category-card {
+        position: relative;
+        height: 300px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+    
+    .category-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    
+    .category-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 20px;
+        background: linear-gradient(transparent, rgba(0,0,0,0.8));
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .category-overlay h3 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 600;
+    }
+    
+    .category-card:hover img {
+        transform: scale(1.1);
+    }
+    
+    .feature-card {
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        background-color: white;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+    
+    .feature-img-wrapper {
+        height: 150px;
+        overflow: hidden;
+        border-radius: 8px;
+    }
+    
+    .feature-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    
+    .feature-card:hover .feature-img {
+        transform: scale(1.1);
+    }
+    
+    .feature-icon {
+        position: absolute;
+        top: 140px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 60px;
+        background-color: #4C7BFD;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 5px 15px rgba(76, 123, 253, 0.3);
+    }
+    
+    .car-card {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .car-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+    
+    .gallery-image {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+    }
+    
+    .gallery-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    
+    .gallery-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .car-card:hover .gallery-image img {
+        transform: scale(1.1);
+    }
+    
+    .car-card:hover .gallery-overlay {
+        opacity: 1;
+    }
+    
+    .car-card-body {
+        background-color: white;
+    }
+    
+    .car-title {
+        font-weight: 600;
+        font-size: 18px;
+    }
+    
+    .car-price {
+        font-weight: 700;
+        font-size: 20px;
+        color: #4C7BFD;
+    }
+    
+    .feature-badge {
+        background-color: #f8f9fa;
+        color: #495057;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        margin-right: 5px;
+    }
+    
+    .cta-section {
+        position: relative;
+        background-image: url("{% static 'images/backgrounds/cta-bg.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+    
+    .cta-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(76, 123, 253, 0.9), rgba(76, 123, 253, 0.7));
+        z-index: 1;
+    }
+    
+    .cta-section .container {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .animate-fade-in {
+        animation: fadeIn 1s ease forwards;
+        opacity: 0;
+    }
+    
+    .animate-float {
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+</style>
+{% endblock %}

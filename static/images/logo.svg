@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="40" viewBox="0 0 200 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Car Icon -->
+    <path d="M30 10L35 20H25L20 10H30Z" fill="#4C7BFD"/>
+    <path d="M15 20H40L38 25H17L15 20Z" fill="#4C7BFD"/>
+    <circle cx="20" cy="28" r="4" fill="#2D3748"/>
+    <circle cx="35" cy="28" r="4" fill="#2D3748"/>
+    
+    <!-- Text -->
+    <text x="60" y="28" font-family="Arial" font-weight="bold" font-size="24" fill="#2D3748">
+        Drive<tspan fill="#4C7BFD">Elite</tspan>
+    </text>
+</svg> 

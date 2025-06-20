@@ -1,0 +1,98 @@
+/* Custom Admin Styles */
+
+:root {
+    --primary-color: #4C7BFD;
+    --secondary-color: #3867e0;
+    --success-color: #48BB78;
+    --warning-color: #ECC94B;
+    --danger-color: #F56565;
+}
+
+/* Header */
+#header {
+    background: var(--primary-color);
+    color: #fff;
+}
+
+#branding h1 a {
+    color: #fff;
+}
+
+/* Buttons */
+.button, input[type=submit], input[type=button], .submit-row input, a.button {
+    background: var(--primary-color);
+}
+
+.button:hover, input[type=submit]:hover, input[type=button]:hover {
+    background: var(--secondary-color);
+}
+
+.button.default, input[type=submit].default, .submit-row input.default {
+    background: var(--success-color);
+}
+
+.button.default:hover, input[type=submit].default:hover {
+    background: #3da066;
+}
+
+/* Module headers */
+.module h2, .module caption, .inline-group h2 {
+    background: var(--primary-color);
+}
+
+/* Breadcrumbs */
+div.breadcrumbs {
+    background: var(--secondary-color);
+}
+
+/* Links */
+a:link, a:visited {
+    color: var(--primary-color);
+}
+
+a:hover {
+    color: var(--secondary-color);
+}
+
+/* Messages */
+.messagelist li.success {
+    background: var(--success-color);
+}
+
+.messagelist li.warning {
+    background: var(--warning-color);
+}
+
+.messagelist li.error {
+    background: var(--danger-color);
+}
+
+/* Form focus */
+.form-row input:focus, .form-row textarea:focus {
+    border-color: var(--primary-color);
+}
+
+/* Selected rows */
+.row1.selected, .row2.selected {
+    background: #e8f0ff;
+}
+
+/* Dashboard */
+.dashboard .module table th {
+    background: #f8f9fa;
+}
+
+/* Responsive improvements */
+@media (max-width: 767px) {
+    #header {
+        padding: 10px 20px;
+    }
+    
+    #branding h1 {
+        font-size: 18px;
+    }
+    
+    .module {
+        margin-bottom: 15px;
+    }
+} 

@@ -1,0 +1,54 @@
+{% extends "admin/login.html" %}
+{% load i18n %}
+
+{% block title %}{{ site_settings.site_name|default:"DriveElite" }} - Admin Login{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+        {{ site_settings.site_name|default:"DriveElite" }} Administration
+    </a>
+</h1>
+{% endblock %}
+
+{% block content_title %}
+<h1>{{ site_settings.site_name|default:"DriveElite" }} Admin Login</h1>
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style type="text/css">
+    :root {
+        --primary-color: #4C7BFD;
+    }
+    
+    #header {
+        background: var(--primary-color);
+        color: #fff;
+    }
+    
+    #branding h1 a {
+        color: #fff;
+    }
+    
+    .button, input[type=submit], input[type=button], .submit-row input, a.button {
+        background: var(--primary-color);
+    }
+    
+    .button:hover, input[type=submit]:hover, input[type=button]:hover {
+        background: #3867e0;
+    }
+    
+    .module h2, .module caption, .inline-group h2 {
+        background: var(--primary-color);
+    }
+    
+    div.breadcrumbs {
+        background: #3867e0;
+    }
+    
+    a:link, a:visited {
+        color: var(--primary-color);
+    }
+</style>
+{% endblock %} 
